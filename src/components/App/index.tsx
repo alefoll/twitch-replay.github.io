@@ -225,11 +225,11 @@ export class App extends React.PureComponent<{}, AppState> {
     }
 
     private readonly getVideos = async (user: UserProps, pagination: string = ""): Promise<{ videos: VideoModel[], pagination: string }> => {
-        const request = await this.api(`videos?user_id=${ user.id }&after=${ pagination }`);
+        const request = await this.api(`videos?user_id=${ user.id }&after=${ pagination }&first=100`);
 
         let data: VideoApiModel[] = request.data;
 
-        data = data.filter((video) => video.thumbnail_url !== "" && video.type === "archive");
+        data = data.filter((video) => video.thumbnail_url !== "" && video.type !== "highlight");
 
         const videos: VideoModel[] = data.map((video) => {
             const start_in_seconds    = Video.dateToSeconds(video.created_at);
